@@ -3,6 +3,9 @@ package com.spring.redis.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.spring.redis.domain.User;
@@ -14,9 +17,20 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Cacheable(cacheNames = "User", key="#root.method.name")
 	public List<User> findAll() {
 		
 		return userRepository.findAll();
+	}
+	
+	@CacheEvict(cacheNames = "User", allEntries = true)
+	public void create(User user) {
+		userRepository.save(user);
+	}
+	
+	@CachePut(cacheNames = "User", key="#user.getIdentifier()")
+	public void update(Long id, User user) {
+		userRepository.save(user);
 	}
 
 }
