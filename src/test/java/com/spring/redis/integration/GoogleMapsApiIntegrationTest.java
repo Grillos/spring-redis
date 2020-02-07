@@ -11,12 +11,14 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.spring.redis.domain.User;
 import com.spring.redis.repository.UserRepository;
 
 @RunWith(SpringRunner.class)
+@ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GoogleMapsApiIntegrationTest {
 	
@@ -40,8 +42,8 @@ public class GoogleMapsApiIntegrationTest {
 	
 	@Test
 	public void findAllUserControllerReturnStatus401() {
-		restTemplate = restTemplate.withBasicAuth("1", "1");
-		ResponseEntity<User> response = restTemplate.getForEntity("/v1/users", User.class);
+		restTemplate = restTemplate.withBasicAuth("user", "***");
+		ResponseEntity<String> response = restTemplate.getForEntity("/v1/users", String.class);
 		Assertions.assertThat(response.getStatusCode()).isEqualTo(401);
 		
 	}
