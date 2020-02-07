@@ -1,13 +1,17 @@
 package com.spring.redis.service;
 
+import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -19,29 +23,36 @@ import com.spring.redis.repository.UserRepository;
 @RunWith(SpringRunner.class)
 public class UserServiceTest {
 	
-	@Autowired
+	@MockBean
 	private UserRepository userRepository;
+	
+	@Autowired
+	UserService userService;
+	
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
+	
+	private Optional<User> user;
 	
 	@Before
 	public void setUp() {
-		User userPreenchido = populaUser();
-	 
+		user = populaUser();
 	}
 	
 	@Test	
 	public void findByIdTest() throws Exception {
-		User user = userRepository.findById(2L).orElse(null);
-		assertThat(user.getId()).isEqualTo(populaUser().getId());
-		
+		BDDMockito.when(userService.findById(2L)).thenReturn(user);
+		Assertions.assertThat(user).isNotNull();
 	}
 	
-	private User populaUser() {
-		return User
-				.builder()
-				.id(2L)
-				.username("teste")
-				.password("*****")
-				.build();
+	private Optional<User> populaUser() {
+		return Optional.of(
+				User
+					.builder()
+					.id(2L)
+					.username("teste")
+					.password("*****")
+					.build());
 	}
 
 }

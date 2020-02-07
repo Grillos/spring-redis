@@ -1,5 +1,7 @@
 package com.spring.redis.repository;
 
+import javax.validation.ConstraintViolationException;
+
 import org.assertj.core.api.Assertions;
 import org.junit.Rule;
 import org.junit.Test;
@@ -20,6 +22,8 @@ import com.spring.redis.domain.User;
 @DataJpaTest
 public class UserRepositoryTest {
 	
+	User user;
+	
 	@Autowired
 	private UserRepository userRepository;
 	
@@ -28,14 +32,21 @@ public class UserRepositoryTest {
 
 	@Test
 	public void createSuccess() {
-		User user = createUserObject();
+		user = createUserObject();
 		userRepository.save(user);
 		
 		Assertions.assertThat(user).isNotNull();
 	}
 	
+	@Test
+	public void saveWithUsernameAndPasswordIsEmptyTest() {
+		thrown.expect(ConstraintViolationException.class);
+		thrown.expectMessage("username cannot be empty");
+		thrown.expectMessage("password cannot be empty");
+		userRepository.save(User.builder().build());
+	}
+	
 	private User createUserObject() {
-		
 		return User
 				.builder()
 				.username("teste.username")

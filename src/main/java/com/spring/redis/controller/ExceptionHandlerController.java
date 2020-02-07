@@ -8,7 +8,7 @@ import com.spring.redis.domain.ErrorResponseException;
 import com.spring.redis.domain.Response;
 
 @RestControllerAdvice
-public class ExceptionHandlerResource {
+public class ExceptionHandlerController {
 
 	@ExceptionHandler(ErrorResponseException.class)
 	public ResponseEntity<Response> errorResponseExceptionHandler(ErrorResponseException ex) {

@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,9 +29,11 @@ public class User implements Serializable {
     private Long id;
 	
 	@Column(name = "username")
+	@NotBlank(message = "username cannot be empty")
 	private String username;
 	
 	@Column(name = "password")
+	@NotBlank(message = "password cannot be empty")
 	private String password;
 	
 }
