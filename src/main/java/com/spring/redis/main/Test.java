@@ -2,10 +2,12 @@ package com.spring.redis.main;
 
 import com.spring.redis.domain.User;
 import com.spring.redis.interfaces.UserPredicate;
+import com.spring.redis.util.CommonUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BinaryOperator;
 import java.util.function.Predicate;
 
 public class Test {
@@ -29,6 +31,9 @@ public class Test {
        UserPredicate userPredicate = (User user) -> user.getPassword().equals("");
 
         System.out.println(userPredicate.test(new User(1L, "roberta.grillo", "*****")));
+
+        System.out.println(CommonUtil.isNullOrEmpty(""));
+
     }
 
 
@@ -40,4 +45,5 @@ public class Test {
         }
         return result;
     }
+
 }
